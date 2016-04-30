@@ -1,3 +1,5 @@
+require('../../css/components/surface.scss');
+
 import React from 'react';
 import CanvasBase from './canvas_base.jsx';
 
@@ -17,9 +19,11 @@ const Surface = React.createClass({
     ));
 
     return (
-      <canvas width="500px" height="500px">
-        {nucleotides}
-      </canvas>
+      <div className="surface">
+        <canvas width="1270px" height="560px">
+          {nucleotides}
+        </canvas>
+      </div>
     );
   },
 });

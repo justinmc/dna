@@ -8,10 +8,12 @@ const App = React.createClass({
     const dbn =      '..((((.....))))..';
 
     return (
-      <div>
-        <h1>DNA Vis</h1>
-        <InputDbn dbn={sequence} />
-        <InputDbn dbn={dbn} />
+      <div className="app">
+        <div className="ui">
+          <h1>DNA Vis</h1>
+          <InputDbn dbn={sequence} />
+          <InputDbn dbn={dbn} />
+        </div>
         <Surface dbn={dbn} sequence={sequence} />
       </div>
     );
