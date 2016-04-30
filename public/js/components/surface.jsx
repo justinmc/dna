@@ -2,6 +2,8 @@ require('../../css/components/surface.scss');
 
 import React from 'react';
 import CanvasBase from './canvas_base.jsx';
+import CanvasConnector from './canvas_connector.jsx';
+import baseStructures from '../constants/base_structures';
 
 const Surface = React.createClass({
   propTypes: {
@@ -10,17 +12,66 @@ const Surface = React.createClass({
   },
 
   render() {
-    // const openQueue = [];
+    const bases = [];
+    const connectors = [];
+    const openQueue = [];
 
-    const bases = this.props.bases.map((base, index) => {
-      // const open = this.props.dbn[index] === '(';
-      // const close = this.props.dbn[index] === ')';
+    this.props.bases.forEach((base, index) => {
+      const open = base.structure === baseStructures.PAIR_OPEN;
+      const close = base.structure === baseStructures.PAIR_CLOSE;
 
-      return (
+      let previousPositions;
+      if (index > 0) {
+        previousPositions = bases[index - 1].props;
+      } else {
+        previousPositions = {
+          x: 50,
+          y: 100,
+        };
+      }
+
+      let x = previousPositions.x + 150;
+      let y = previousPositions.y;
+
+      if (open) {
+        openQueue.push({ x, y });
+      } else if (close) {
+        if (!openQueue.length) {
+          throw new Error('Mismatching open/close in structure');
+        }
+
+        // dequeue
+        const openPositions = openQueue[0];
+        x = openPositions.x;
+        y = openPositions.y + 150;
+        openQueue.splice(0, 1);
+
+        connectors.push(
+          <CanvasConnector
+            key={`connector-close-${index}`}
+            startX={openPositions.x}
+            startY={openPositions.y}
+            endX={x}
+            endY={y}
+          />
+        );
+      }
+
+      bases.push(
         <CanvasBase
-          key={index}
-          x={50 + 150 * index}
-          y={100}
+          key={`base-${index}`}
+          x={x}
+          y={y}
+        />
+      );
+
+      connectors.push(
+        <CanvasConnector
+          key={`connector-${index}`}
+          startX={previousPositions.x}
+          startY={previousPositions.y}
+          endX={x}
+          endY={y}
         />
       );
     });
@@ -29,6 +80,7 @@ const Surface = React.createClass({
       <div className="surface">
         <canvas width="1270px" height="560px">
           {bases}
+          {connectors}
         </canvas>
       </div>
     );
