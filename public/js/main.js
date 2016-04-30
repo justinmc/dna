@@ -1,3 +1,5 @@
+require('../css/components/canvas.scss');
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CanvasBase from './components/canvas_base.jsx';
