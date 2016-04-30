@@ -1,11 +1,13 @@
 import React from 'react';
 import InputDbn from './input_dbn.jsx';
 import Surface from './surface.jsx';
+import dbnUtils from '../utils/dbn_utils';
 
 const App = React.createClass({
   render() {
     const sequence = 'GAGUACAAUAUGUACCG';
-    const dbn =      '..((((.....))))..';
+    const dbn = '..((((.....))))..';
+    const bases = dbnUtils.createStructure(sequence, dbn);
 
     return (
       <div className="app">
@@ -14,7 +16,7 @@ const App = React.createClass({
           <InputDbn dbn={sequence} />
           <InputDbn dbn={dbn} />
         </div>
-        <Surface dbn={dbn} sequence={sequence} />
+        <Surface bases={bases} dbn={dbn} sequence={sequence} />
       </div>
     );
   },

@@ -6,22 +6,29 @@ import CanvasBase from './canvas_base.jsx';
 const Surface = React.createClass({
   propTypes: {
     sequence: React.PropTypes.string,
-    dbn: React.PropTypes.string,
+    bases: React.PropTypes.object,
   },
 
   render() {
-    const nucleotides = this.props.sequence.split('').map((nucleotide, index) => (
-      <CanvasBase
-        key={index}
-        x={50 * index}
-        y={50 * index}
-      />
-    ));
+    // const openQueue = [];
+
+    const bases = this.props.bases.map((base, index) => {
+      // const open = this.props.dbn[index] === '(';
+      // const close = this.props.dbn[index] === ')';
+
+      return (
+        <CanvasBase
+          key={index}
+          x={50 + 150 * index}
+          y={100}
+        />
+      );
+    });
 
     return (
       <div className="surface">
         <canvas width="1270px" height="560px">
-          {nucleotides}
+          {bases}
         </canvas>
       </div>
     );
