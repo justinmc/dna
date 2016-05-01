@@ -3,10 +3,10 @@ import CanvasMixin from '../mixins/canvas_mixin.jsx';
 
 const CanvasConnector = React.createClass({
   propTypes: {
-    startX: React.PropTypes.number,
-    startY: React.PropTypes.number,
-    endX: React.PropTypes.number,
-    endY: React.PropTypes.number,
+    startX: React.PropTypes.number.isRequired,
+    startY: React.PropTypes.number.isRequired,
+    endX: React.PropTypes.number.isRequired,
+    endY: React.PropTypes.number.isRequired,
   },
 
   mixins: [CanvasMixin],

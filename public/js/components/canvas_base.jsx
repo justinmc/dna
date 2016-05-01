@@ -3,8 +3,8 @@ import CanvasMixin from '../mixins/canvas_mixin.jsx';
 
 const CanvasBase = React.createClass({
   propTypes: {
-    x: React.PropTypes.number,
-    y: React.PropTypes.number,
+    x: React.PropTypes.number.isRequired,
+    y: React.PropTypes.number.isRequired,
   },
 
   mixins: [CanvasMixin],

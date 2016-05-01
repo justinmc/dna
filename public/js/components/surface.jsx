@@ -1,86 +1,83 @@
 require('../../css/components/surface.scss');
 
 import React from 'react';
-import CanvasBase from './canvas_base.jsx';
-import CanvasConnector from './canvas_connector.jsx';
-import baseStructures from '../constants/base_structures';
+import Scene from './scene.jsx';
 
 const Surface = React.createClass({
   propTypes: {
-    sequence: React.PropTypes.string,
     bases: React.PropTypes.object,
   },
 
-  render() {
-    const bases = [];
-    const connectors = [];
-    const openQueue = [];
+  getInitialState() {
+    return {
+      x: 0,
+      y: 0,
+      dragX: null,
+      dragY: null,
+      dragging: false,
+    };
+  },
 
-    this.props.bases.forEach((base, index) => {
-      const open = base.structure === baseStructures.PAIR_OPEN;
-      const close = base.structure === baseStructures.PAIR_CLOSE;
+  componentWillUpdate() {
+    // Clear the canvas between renders
+    const canvas = this.refs.canvas;
 
-      let previousPositions;
-      if (index > 0) {
-        previousPositions = bases[index - 1].props;
-      } else {
-        previousPositions = {
-          x: 50,
-          y: 100,
-        };
-      }
+    if (!canvas.getContext) {
+      return;
+    }
 
-      let x = previousPositions.x + 150;
-      let y = previousPositions.y;
+    const ctx = canvas.getContext('2d');
 
-      if (open) {
-        openQueue.push({ x, y });
-      } else if (close) {
-        if (!openQueue.length) {
-          throw new Error('Mismatching open/close in structure');
-        }
+    if (!ctx) {
+      return;
+    }
 
-        // dequeue
-        const openPositions = openQueue[0];
-        x = openPositions.x;
-        y = openPositions.y + 150;
-        openQueue.splice(0, 1);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  },
 
-        connectors.push(
-          <CanvasConnector
-            key={`connector-close-${index}`}
-            startX={openPositions.x}
-            startY={openPositions.y}
-            endX={x}
-            endY={y}
-          />
-        );
-      }
-
-      bases.push(
-        <CanvasBase
-          key={`base-${index}`}
-          x={x}
-          y={y}
-        />
-      );
-
-      connectors.push(
-        <CanvasConnector
-          key={`connector-${index}`}
-          startX={previousPositions.x}
-          startY={previousPositions.y}
-          endX={x}
-          endY={y}
-        />
-      );
+  onMouseDown(e) {
+    this.setState({
+      dragging: true,
+      dragX: e.clientX,
+      dragY: e.clientY,
     });
+  },
 
+  onMouseMove(e) {
+    if (this.state.dragging) {
+      this.setState({
+        x: this.state.x + e.clientX - this.state.dragX,
+        y: this.state.y + e.clientY - this.state.dragY,
+        dragX: e.clientX,
+        dragY: e.clientY,
+      });
+    }
+  },
+
+  onMouseUp() {
+    this.setState({
+      dragging: false,
+      dragX: null,
+      dragY: null,
+    });
+  },
+
+  render() {
     return (
       <div className="surface">
-        <canvas width="1270px" height="560px">
-          {bases}
-          {connectors}
+        <canvas
+          ref="canvas"
+          width="1270px"
+          height="560px"
+          onMouseDown={this.onMouseDown}
+          onMouseMove={this.onMouseMove}
+          onMouseUp={this.onMouseUp}
+        >
+          <Scene
+            x={this.state.x}
+            y={this.state.y}
+            bases={this.props.bases}
+          />
         </canvas>
       </div>
     );
