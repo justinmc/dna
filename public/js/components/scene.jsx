@@ -30,22 +30,29 @@ const Scene = React.createClass({
       const open = base.structure === baseStructures.PAIR_OPEN;
       const close = base.structure === baseStructures.PAIR_CLOSE;
 
+      let x = this.props.x + 50;
+      let y = this.props.y + 100;
+      let turn = 0;
       let previousPositions;
+
       if (index > 0) {
         previousPositions = bases[index - 1].props;
-      } else {
-        previousPositions = {
-          x: this.props.x + 50,
-          y: this.props.y + 100,
-        };
-      }
+        turn = Math.PI - geometryUtils.getInteriorAngle(this.props.basesList.size);
 
-      let { x, y } = geometryUtils.getPositionAtAngleAndDistance(
-        previousPositions.x,
-        previousPositions.y,
-        angle,
-        SPACING
-      );
+        ({ x, y } = geometryUtils.getPoint(
+          previousPositions.x,
+          previousPositions.y,
+          angle,
+          turn,
+          SPACING
+        ));
+
+        angle += turn;
+      } else {
+        // Set the initial angle to turn from
+        turn = Math.PI - geometryUtils.getInteriorAngle(this.props.basesList.size);
+        angle = turn - Math.PI / 2;
+      }
 
       if (open) {
         openStack.push({ x, y });
@@ -78,15 +85,17 @@ const Scene = React.createClass({
         />
       );
 
-      connectors.push(
-        <CanvasConnector
-          key={`connector-${index}`}
-          startX={previousPositions.x}
-          startY={previousPositions.y}
-          endX={x}
-          endY={y}
-        />
-      );
+      if (previousPositions) {
+        connectors.push(
+          <CanvasConnector
+            key={`connector-${index}`}
+            startX={previousPositions.x}
+            startY={previousPositions.y}
+            endX={x}
+            endY={y}
+          />
+        );
+      }
     });
 
     return (
