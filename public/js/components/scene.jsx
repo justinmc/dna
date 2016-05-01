@@ -8,7 +8,7 @@ const SPACING = 150;
 
 const Scene = React.createClass({
   propTypes: {
-    bases: React.PropTypes.object,
+    basesList: React.PropTypes.object,
     x: React.PropTypes.number,
     y: React.PropTypes.number,
   },
@@ -26,7 +26,7 @@ const Scene = React.createClass({
     const openStack = [];
     let angle = 0;
 
-    this.props.bases.forEach((base, index) => {
+    this.props.basesList.forEach((base, index) => {
       const open = base.structure === baseStructures.PAIR_OPEN;
       const close = base.structure === baseStructures.PAIR_CLOSE;
 

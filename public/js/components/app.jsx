@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 // import ColorPicker from './color_picker.jsx';
-// import InputDbn from './input_dbn.jsx';
+import InputDbn from './input_dbn.jsx';
 import Surface from './surface.jsx';
 import appActions from '../actions/app_actions';
 
@@ -16,16 +16,14 @@ const App = React.createClass({
   },
 
   render() {
-    /*
-          <InputDbn dbn={sequence} />
-          <InputDbn dbn={dbn} />
-    */
     return (
       <div className="app">
         <div className="ui">
           <h1>DNA Vis</h1>
+          <InputDbn dbn={this.props.bases.get('sequence')} />
+          <InputDbn dbn={this.props.bases.get('dbn')} />
         </div>
-        <Surface bases={this.props.bases} />
+        <Surface basesList={this.props.bases.get('list')} />
       </div>
     );
   },

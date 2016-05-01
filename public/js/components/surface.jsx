@@ -5,7 +5,7 @@ import Scene from './scene.jsx';
 
 const Surface = React.createClass({
   propTypes: {
-    bases: React.PropTypes.object,
+    basesList: React.PropTypes.object,
   },
 
   getInitialState() {
@@ -83,7 +83,7 @@ const Surface = React.createClass({
           <Scene
             x={this.state.x}
             y={this.state.y}
-            bases={this.props.bases}
+            basesList={this.props.basesList}
           />
         </canvas>
       </div>
