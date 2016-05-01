@@ -18,6 +18,10 @@ const Surface = React.createClass({
     };
   },
 
+  componentDidMount() {
+    window.addEventListener('mousemove', this.onMouseMove);
+  },
+
   componentWillUpdate() {
     // Clear the canvas between renders
     const canvas = this.refs.canvas;
@@ -33,6 +37,10 @@ const Surface = React.createClass({
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+  },
+
+  componentWillUnmount() {
+    window.removeEventListener('mousemove', this.onMouseMove);
   },
 
   onMouseDown(e) {
@@ -70,7 +78,6 @@ const Surface = React.createClass({
           width="1270px"
           height="560px"
           onMouseDown={this.onMouseDown}
-          onMouseMove={this.onMouseMove}
           onMouseUp={this.onMouseUp}
         >
           <Scene
