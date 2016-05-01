@@ -15,6 +15,16 @@ const App = React.createClass({
 
   componentDidMount() {
     this.props.dispatch(appActions.startApp());
+
+    window.addEventListener('popstate', this.onPopState);
+  },
+
+  componentWillUnmount() {
+    window.removeEventListener('popstate', this.onPopState);
+  },
+
+  onPopState() {
+    this.props.dispatch(appActions.popState());
   },
 
   render() {

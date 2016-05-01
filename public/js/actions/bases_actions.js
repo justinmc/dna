@@ -12,12 +12,19 @@ const appActions = {
       error = err;
     }
 
+    const errorMessage = error ? error.message : '';
+
+    if (!error) {
+      const url = `/?sequence=${sequence}&dbn=${dbn}`;
+      window.history.pushState({}, '', url);
+    }
+
     return {
       type: actionConstants.SUBMIT_BASES_FORM,
       sequence,
       dbn,
       basesList,
-      error: error ? error.message : '',
+      error: errorMessage,
     };
   },
 };

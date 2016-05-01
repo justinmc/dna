@@ -11,6 +11,16 @@ const appActions = {
       dbn: query.dbn,
     };
   },
+
+  popState() {
+    const query = qs.parse(window.location.search);
+
+    return {
+      type: actionConstants.POP_STATE,
+      sequence: query.sequence,
+      dbn: query.dbn,
+    };
+  },
 };
 
 export default appActions;

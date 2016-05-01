@@ -11,6 +11,13 @@ const initialState = Map({
 
 function bases(state = initialState, action) {
   switch (action.type) {
+    case actionConstants.POP_STATE:
+      return state.merge({
+        sequence: action.sequence,
+        dbn: action.dbn,
+        list: dbnUtils.createStructure(action.sequence, action.dbn),
+      });
+
     case actionConstants.START_APP:
       if (typeof action.sequence !== 'string' || typeof action.dbn !== 'string') {
         return state;
