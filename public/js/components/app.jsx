@@ -26,6 +26,7 @@ const App = React.createClass({
             basesActionsBound={bindActionCreators(basesActions, this.props.dispatch)}
             sequence={this.props.bases.get('sequence')}
             dbn={this.props.bases.get('dbn')}
+            dataError={this.props.bases.get('dataError')}
           />
         </div>
         <Surface basesList={this.props.bases.get('list')} />

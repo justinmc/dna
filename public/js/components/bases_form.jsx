@@ -5,6 +5,7 @@ const BasesForm = React.createClass({
     basesActionsBound: React.PropTypes.object,
     dbn: React.PropTypes.string,
     sequence: React.PropTypes.string,
+    dataError: React.PropTypes.string,
   },
 
   getInitialState() {
@@ -51,6 +52,7 @@ const BasesForm = React.createClass({
           value={this.state.dbn}
           onChange={this.onChangeDbn}
         />
+        <span className="error">{this.props.dataError}</span>
         <button type="submit">Submit</button>
       </form>
     );

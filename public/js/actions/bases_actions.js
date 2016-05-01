@@ -17,7 +17,7 @@ const appActions = {
       sequence,
       dbn,
       basesList,
-      error,
+      error: error ? error.message : '',
     };
   },
 };

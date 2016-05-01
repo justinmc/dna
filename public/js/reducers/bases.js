@@ -3,7 +3,7 @@ import actionConstants from '../constants/action_constants';
 import dbnUtils from '../utils/dbn_utils';
 
 const initialState = Map({
-  dataError: null,
+  dataError: '',
   sequence: null,
   dbn: null,
   list: List(),
@@ -24,9 +24,7 @@ function bases(state = initialState, action) {
 
     case actionConstants.SUBMIT_BASES_FORM:
       if (action.error) {
-        return state.set({
-          dataError: action.error,
-        });
+        return state.set('dataError', action.error);
       }
 
       return state.merge({
