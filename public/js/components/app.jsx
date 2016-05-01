@@ -1,25 +1,34 @@
 import React from 'react';
-import InputDbn from './input_dbn.jsx';
+import { connect } from 'react-redux';
+// import ColorPicker from './color_picker.jsx';
+// import InputDbn from './input_dbn.jsx';
 import Surface from './surface.jsx';
-import dbnUtils from '../utils/dbn_utils';
 
 const App = React.createClass({
-  render() {
-    const sequence = 'GAGTACAATATGTACCG';
-    const dbn = '..((((.....))))..';
-    const bases = dbnUtils.createStructure(sequence, dbn);
+  propTypes: {
+    bases: React.PropTypes.object,
+  },
 
+  render() {
+    /*
+          <InputDbn dbn={sequence} />
+          <InputDbn dbn={dbn} />
+    */
     return (
       <div className="app">
         <div className="ui">
           <h1>DNA Vis</h1>
-          <InputDbn dbn={sequence} />
-          <InputDbn dbn={dbn} />
         </div>
-        <Surface bases={bases} dbn={dbn} sequence={sequence} />
+        <Surface bases={this.props.bases} />
       </div>
     );
   },
 });
 
-export default App;
+function select(state) {
+  return {
+    bases: state.bases,
+  };
+}
+
+export default connect(select)(App);
