@@ -3,6 +3,7 @@ import actionConstants from '../constants/action_constants';
 import dbnUtils from '../utils/dbn_utils';
 
 const initialState = Map({
+  dataError: null,
   sequence: null,
   dbn: null,
   list: List(),
@@ -19,6 +20,20 @@ function bases(state = initialState, action) {
         sequence: action.sequence,
         dbn: action.dbn,
         list: dbnUtils.createStructure(action.sequence, action.dbn),
+      });
+
+    case actionConstants.SUBMIT_BASES_FORM:
+      if (action.error) {
+        return state.set({
+          dataError: action.error,
+        });
+      }
+
+      return state.merge({
+        list: action.basesList,
+        sequence: action.sequence,
+        dbn: action.dbn,
+        dataError: null,
       });
 
     default:
