@@ -3,10 +3,16 @@ import { connect } from 'react-redux';
 // import ColorPicker from './color_picker.jsx';
 // import InputDbn from './input_dbn.jsx';
 import Surface from './surface.jsx';
+import appActions from '../actions/app_actions';
 
 const App = React.createClass({
   propTypes: {
     bases: React.PropTypes.object,
+    dispatch: React.PropTypes.func,
+  },
+
+  componentDidMount() {
+    this.props.dispatch(appActions.startApp());
   },
 
   render() {
