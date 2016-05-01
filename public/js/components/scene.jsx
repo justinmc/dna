@@ -20,7 +20,7 @@ const Scene = React.createClass({
   render() {
     const bases = [];
     const connectors = [];
-    const openQueue = [];
+    const openStack = [];
 
     this.props.bases.forEach((base, index) => {
       const open = base.structure === baseStructures.PAIR_OPEN;
@@ -40,17 +40,15 @@ const Scene = React.createClass({
       let y = previousPositions.y;
 
       if (open) {
-        openQueue.push({ x, y });
+        openStack.push({ x, y });
       } else if (close) {
-        if (!openQueue.length) {
+        if (!openStack.length) {
           throw new Error('Mismatching open/close in structure');
         }
 
-        // dequeue
-        const openPositions = openQueue[0];
+        const openPositions = openStack.pop();
         x = openPositions.x;
         y = openPositions.y + 150;
-        openQueue.splice(0, 1);
 
         connectors.push(
           <CanvasConnector
@@ -68,6 +66,7 @@ const Scene = React.createClass({
           key={`base-${index}`}
           x={x}
           y={y}
+          type={base.type}
         />
       );
 

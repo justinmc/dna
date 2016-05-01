@@ -4,6 +4,7 @@
     "react/prefer-es6-class": "off",
     "react/require-render-return": "warn",
     "react/prefer-stateless-function": "warn",
-    "new-cap": "warn"
+    "new-cap": "warn",
+    "no-param-reassign": "warn"
   }
 }

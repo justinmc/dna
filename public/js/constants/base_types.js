@@ -5,6 +5,7 @@ const baseTypes = keyMirror({
   G: null,
   T: null,
   C: null,
+  N: null,
 });
 
 export default baseTypes;

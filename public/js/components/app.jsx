@@ -5,7 +5,7 @@ import dbnUtils from '../utils/dbn_utils';
 
 const App = React.createClass({
   render() {
-    const sequence = 'GAGUACAAUAUGUACCG';
+    const sequence = 'GAGTACAATATGTACCG';
     const dbn = '..((((.....))))..';
     const bases = dbnUtils.createStructure(sequence, dbn);
 

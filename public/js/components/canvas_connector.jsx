@@ -12,6 +12,7 @@ const CanvasConnector = React.createClass({
   mixins: [CanvasMixin],
 
   renderOnCanvas(ctx) {
+    ctx.fillStyle = '#000000';
     ctx.beginPath();
     ctx.moveTo(this.props.startX, this.props.startY);
     ctx.lineTo(this.props.endX, this.props.endY);
