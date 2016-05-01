@@ -2,6 +2,9 @@ import React from 'react';
 import CanvasBase from './canvas_base.jsx';
 import CanvasConnector from './canvas_connector.jsx';
 import baseStructures from '../constants/base_structures';
+import geometryUtils from '../utils/geometry_utils';
+
+const SPACING = 150;
 
 const Scene = React.createClass({
   propTypes: {
@@ -21,6 +24,7 @@ const Scene = React.createClass({
     const bases = [];
     const connectors = [];
     const openStack = [];
+    let angle = 0;
 
     this.props.bases.forEach((base, index) => {
       const open = base.structure === baseStructures.PAIR_OPEN;
@@ -36,8 +40,12 @@ const Scene = React.createClass({
         };
       }
 
-      let x = previousPositions.x + 150;
-      let y = previousPositions.y;
+      let { x, y } = geometryUtils.getPositionAtAngleAndDistance(
+        previousPositions.x,
+        previousPositions.y,
+        angle,
+        SPACING
+      );
 
       if (open) {
         openStack.push({ x, y });
