@@ -75,6 +75,8 @@ const Surface = React.createClass({
   },
 
   onWheel(e) {
+    e.preventDefault();
+
     const normalizedScaleChange = e.deltaY / 1000;
 
     this.setState({
