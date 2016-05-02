@@ -1,3 +1,5 @@
+require('../../css/components/bases_form.scss');
+
 import React from 'react';
 
 const BasesForm = React.createClass({
@@ -42,18 +44,20 @@ const BasesForm = React.createClass({
   render() {
     return (
       <form className="bases-form" onSubmit={this.onSubmit}>
-        <input
-          className="input-sequence"
-          value={this.state.sequence}
-          onChange={this.onChangeSequence}
-        />
-        <input
-          className="input-dbn"
-          value={this.state.dbn}
-          onChange={this.onChangeDbn}
-        />
-        <span className="error">{this.props.dataError}</span>
+        <div>
+          <input
+            className="input-sequence"
+            value={this.state.sequence}
+            onChange={this.onChangeSequence}
+          />
+          <input
+            className="input-dbn"
+            value={this.state.dbn}
+            onChange={this.onChangeDbn}
+          />
+        </div>
         <button type="submit">Submit</button>
+        <div className="error">{this.props.dataError}</div>
       </form>
     );
   },

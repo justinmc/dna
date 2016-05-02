@@ -1,0 +1,16 @@
+.bases-form {
+  display: flex;
+
+  input {
+    display: block;
+    width: 500px;
+  }
+
+  .error {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 1rem;
+    color: red;
+  }
+}

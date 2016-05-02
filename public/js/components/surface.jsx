@@ -27,7 +27,7 @@ const Surface = React.createClass({
     window.addEventListener('mousemove', this.onMouseMove);
   },
 
- componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps, nextState) {
     // Clear the canvas between renders
     const canvas = this.refs.canvas;
 
@@ -114,7 +114,6 @@ const Surface = React.createClass({
   render() {
     return (
       <div className="surface">
-        <button onClick={this.clickCenter}>Recenter</button>
         <canvas
           ref="canvas"
           width={`${WIDTH}px`}
@@ -129,6 +128,7 @@ const Surface = React.createClass({
             basesList={this.props.basesList}
           />
         </canvas>
+        <button onClick={this.clickCenter}>Recenter</button>
       </div>
     );
   },
