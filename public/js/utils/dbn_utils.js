@@ -18,14 +18,42 @@ const dbnUtils = {
       throw validationError;
     }
 
-    return List(sequence.split('').map((baseChar, index) => {
+    // Maintain a stack of open bases to find closing matches as we go
+    const openStack = [];
+    let basesList = List();
+
+    sequence.split('').forEach((baseChar, index) => {
+      let pair;
       const structureChar = dbn[index];
 
-      return Base({
+      let base = Base({
+        index,
         type: baseChar,
         structure: structureChar,
       });
-    }));
+
+      // For opens, add to openStack for later
+      if (base.structure === baseStructures.PAIR_OPEN) {
+        openStack.push(base);
+
+      // For closes, grab the pair from the openStack
+      } else if (base.structure === baseStructures.PAIR_CLOSE) {
+        if (!openStack.length) {
+          throw new Error('Mismatching open/close in structure');
+        }
+
+        pair = openStack.pop();
+
+        // Update the pair on both bases
+        pair = pair.set('pair', base);
+        basesList = basesList.set(pair.index, pair);
+        base = base.set('pair', pair);
+      }
+
+      basesList = basesList.push(base);
+    });
+
+    return basesList;
   },
 
   /**

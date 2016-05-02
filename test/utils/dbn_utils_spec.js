@@ -21,7 +21,7 @@ describe('dbnUtils', function() {
 
     describe('when given valid params', function() {
       beforeEach(function() {
-        sequence = 'catg';
+        sequence = 'CATG';
         dbn = '.().';
       });
 

@@ -1,9 +1,4 @@
 const geometryUtils = {
-  getPoint(x, y, angle, turn, distance) {
-    const newAngle = angle + turn;
-    return geometryUtils.getPositionAtAngleAndDistance(x, y, angle, distance);
-  },
-
   /**
    * Find the position the given distance away from the given point at the given angle
    * @param {Number} x
