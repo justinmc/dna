@@ -15,6 +15,7 @@ const Surface = React.createClass({
       dragX: null,
       dragY: null,
       dragging: false,
+      scale: 1,
     };
   },
 
@@ -36,7 +37,10 @@ const Surface = React.createClass({
       return;
     }
 
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.setTransform(this.state.scale, 0, 0, this.state.scale, 0, 0);
   },
 
   componentWillUnmount() {
@@ -70,6 +74,14 @@ const Surface = React.createClass({
     });
   },
 
+  onWheel(e) {
+    const normalizedScaleChange = e.deltaY / 1000;
+
+    this.setState({
+      scale: this.state.scale + normalizedScaleChange,
+    });
+  },
+
   render() {
     return (
       <div className="surface">
@@ -79,6 +91,7 @@ const Surface = React.createClass({
           height="560px"
           onMouseDown={this.onMouseDown}
           onMouseUp={this.onMouseUp}
+          onWheel={this.onWheel}
         >
           <Scene
             x={this.state.x}
