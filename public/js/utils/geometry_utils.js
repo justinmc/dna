@@ -33,6 +33,22 @@ const geometryUtils = {
     // sum of interior angles = 180deg(n - 2)
     return Math.PI * (vertices - 2) / vertices;
   },
+
+  /**
+   * Returns true if the point is inside the circle
+   * Currently took the lazy way out and did a square
+   * @param {Number} x
+   * @param {Number} y
+   * @param {Number} radius
+   * @param {Number} pointX
+   * @param {Number} pointY
+   */
+  isIinsideCircle(x, y, radius, pointX, pointY) {
+    const xInside = pointX > x - radius && pointX < x + radius;
+    const yInside = pointY > y - radius && pointY < y + radius;
+
+    return xInside && yInside;
+  },
 };
 
 export default geometryUtils;

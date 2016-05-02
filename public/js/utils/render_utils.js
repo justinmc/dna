@@ -5,14 +5,23 @@ import baseStructures from '../constants/base_structures';
 import geometryUtils from '../utils/geometry_utils';
 
 const SPACING = 150;
+const BASE_RADIUS = 50;
 
 const renderUtils = {
   /**
    * Render the indicated base and everything coming after it,
    * starting at the given point and direction
    * @param {Immutable.List} basesList
+   * @param {Number} startIndex
+   * @param {Number} x
+   * @param {Number} y
+   * @param {Number} startAngle in radians
+   * @returns {Object} with bases, connectors, and bbox keys
    */
-  renderBasesList(basesList, startIndex, x, y, startAngle) {
+  renderBasesList(params) {
+    const { index: startIndex, x, y, mouseX, mouseY } = params;
+    const startAngle = params.angle || 0;
+    let basesList = params.basesList;
     let bases = [];
     let connectors = [];
     let bbox = {
@@ -21,8 +30,7 @@ const renderUtils = {
       width: 0,
       height: 0,
     };
-    const recursions = [];
-    let angle = startAngle;
+    const exitPaths = [];
 
     const renderableBases = renderUtils.getRenderableBases(basesList, startIndex);
 
@@ -30,34 +38,38 @@ const renderUtils = {
       const open = base.structure === baseStructures.PAIR_OPEN;
       const close = base.structure === baseStructures.PAIR_CLOSE;
 
-      let baseX = x + 50;
-      let baseY = y + 100;
-      const turn = Math.PI - geometryUtils.getInteriorAngle(renderableBases.length);
-      let previousPositions;
+      let baseX = x;
+      let baseY = y;
+      const angle = renderUtils.getAngle(startAngle, renderableBases.length, index);
+      let previousPositions = {};
 
       if (index > 0) {
         previousPositions = bases[index - 1].props;
-
-        ({ x: baseX, y: baseY } = geometryUtils.getPositionAtAngleAndDistance(
-          previousPositions.x,
-          previousPositions.y,
-          angle,
-          SPACING
-        ));
-
-        angle += turn;
-      } else {
-        // Set the initial angle to turn from
-        angle = turn - Math.PI / 2 + startAngle;
       }
 
+      ({ x: baseX, y: baseY } = geometryUtils.getPositionAtAngleAndDistance(
+        previousPositions.x || x,
+        previousPositions.y || y,
+        angle,
+        SPACING
+      ));
+
       if (open) {
-        // We'll need to recurse on this base later
-        recursions.push({
+        // Next angle is the one between this base and its pair
+        const nextAngle = renderUtils.getAngle(
+          startAngle,
+          renderableBases.length,
+          index + 1
+        );
+        // We should exit perpendicular to it
+        const exitAngle = nextAngle - Math.PI / 2;
+
+        // Reecurse on this base later
+        exitPaths.push({
           index: base.index + 1,
           x: baseX,
           y: baseY,
-          angle: angle - Math.PI / 2,
+          angle: exitAngle,
         });
       } else if (close) {
         /*
@@ -84,12 +96,14 @@ const renderUtils = {
           x={baseX}
           y={baseY}
           type={base.type}
+          radius={BASE_RADIUS}
+          hovered={geometryUtils.isIinsideCircle(baseX, baseY, BASE_RADIUS, mouseX, mouseY)}
         />
       );
       basesList = basesList.set(base.index, base.set('rendered', true));
       bbox = renderUtils.updateBboxWithPoint(bbox, x, y);
 
-      if (previousPositions) {
+      if (previousPositions.x && previousPositions.y) {
         connectors.push(
           <CanvasConnector
             key={`connector-${base.index}`}
@@ -103,20 +117,42 @@ const renderUtils = {
     });
 
     // Recurse on exit points we found
-    recursions.forEach((recurseData) => {
-      const recurseResults = renderUtils.renderBasesList(
+    exitPaths.forEach((recurseData) => {
+      const recurseResults = renderUtils.renderBasesList({
         basesList,
-        recurseData.index,
-        recurseData.x,
-        recurseData.y,
-        recurseData.angle
-      );
+        index: recurseData.index,
+        x: recurseData.x,
+        y: recurseData.y,
+        angle: recurseData.angle,
+        mouseX,
+        mouseY,
+      });
       bases = bases.concat(recurseResults.bases);
       connectors = connectors.concat(recurseResults.connectors);
       bbox = renderUtils.updateBboxWithBbox(bbox, recurseResults.bbox);
     });
 
     return { bases, connectors, bbox };
+  },
+
+  /**
+   * Get the angle at which this point should be placed relative to previous
+   * @param {Number} startAngle, radians
+   * @param {Number} vertices
+   * @param {Number} index
+   * @returns {Number}
+   */
+  getAngle(startAngle, vertices, index) {
+    // First point goes in given direction
+    if (index === 0) {
+      return startAngle;
+    }
+
+    // Subsequent points start turning
+    const turnStartAngle = startAngle - Math.PI / 2;
+    const turn = 2 * Math.PI / vertices;
+
+    return turnStartAngle + index * turn;
   },
 
   /**

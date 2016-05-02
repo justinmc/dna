@@ -16,8 +16,8 @@ const Surface = React.createClass({
     return {
       x: 0,
       y: 0,
-      dragX: null,
-      dragY: null,
+      mouseX: 0,
+      mouseY: 0,
       dragging: false,
       scale: 1,
     };
@@ -51,30 +51,30 @@ const Surface = React.createClass({
     window.removeEventListener('mousemove', this.onMouseMove);
   },
 
-  onMouseDown(e) {
+  onMouseDown() {
     this.setState({
       dragging: true,
-      dragX: e.clientX,
-      dragY: e.clientY,
     });
   },
 
   onMouseMove(e) {
+    const canvasPosition = e.target.getBoundingClientRect();
+    const newState = {
+      mouseX: e.clientX - canvasPosition.left,
+      mouseY: e.clientY - canvasPosition.top,
+    };
+
     if (this.state.dragging) {
-      this.setState({
-        x: this.state.x + (e.clientX - this.state.dragX) / this.state.scale,
-        y: this.state.y + (e.clientY - this.state.dragY) / this.state.scale,
-        dragX: e.clientX,
-        dragY: e.clientY,
-      });
+      newState.x = this.state.x + (newState.mouseX - this.state.mouseX) / this.state.scale;
+      newState.y = this.state.y + (newState.mouseY - this.state.mouseY) / this.state.scale;
     }
+
+    this.setState(newState);
   },
 
   onMouseUp() {
     this.setState({
       dragging: false,
-      dragX: null,
-      dragY: null,
     });
   },
 
@@ -90,7 +90,14 @@ const Surface = React.createClass({
 
   clickCenter() {
     const PADDING = 50;
-    const { bbox } = renderUtils.renderBasesList(this.props.basesList, 0, 0, 0, 0);
+    const { bbox } = renderUtils.renderBasesList({
+      basesList: this.props.basesList,
+      index: 0,
+      x: 0,
+      y: 0,
+      mouseX: 0,
+      mouseY: 0,
+    });
     const newScaleX = WIDTH / bbox.width;
     const newScaleY = HEIGHT / bbox.height;
     let newScale;
@@ -112,6 +119,8 @@ const Surface = React.createClass({
   },
 
   render() {
+    //console.log('mousies', this.state.mouseX / this.state.scale, this.state.mouseY / this.state.scale);
+    //console.log('render at', this.state.x, this.state.y);
     return (
       <div className="surface">
         <canvas
@@ -125,6 +134,8 @@ const Surface = React.createClass({
           <Scene
             x={this.state.x}
             y={this.state.y}
+            mouseX={this.state.mouseX / this.state.scale}
+            mouseY={this.state.mouseY / this.state.scale}
             basesList={this.props.basesList}
           />
         </canvas>

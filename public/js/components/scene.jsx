@@ -6,6 +6,8 @@ const Scene = React.createClass({
     basesList: React.PropTypes.object,
     x: React.PropTypes.number,
     y: React.PropTypes.number,
+    mouseX: React.PropTypes.number,
+    mouseY: React.PropTypes.number,
   },
 
   getDefaultProps() {
@@ -16,13 +18,14 @@ const Scene = React.createClass({
   },
 
   render() {
-    const { bases, connectors } = renderUtils.renderBasesList(
-      this.props.basesList,
-      0,
-      this.props.x,
-      this.props.y,
-      0
-    );
+    const { bases, connectors } = renderUtils.renderBasesList({
+      basesList: this.props.basesList,
+      index: 0,
+      x: this.props.x,
+      y: this.props.y,
+      mouseX: this.props.mouseX,
+      mouseY: this.props.mouseY,
+    });
 
     return (
       <span>

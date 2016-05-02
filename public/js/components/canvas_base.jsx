@@ -13,22 +13,26 @@ const CanvasBase = React.createClass({
       BaseTypes.C,
       BaseTypes.N,
     ]).isRequired,
+    radius: React.PropTypes.number.isRequired,
+    hovered: React.PropTypes.bool.isRequired,
   },
 
   mixins: [CanvasMixin],
 
   renderOnCanvas(ctx) {
-    const radius = 50;
-
-    ctx.fillStyle = '#000000';
+    ctx.fillStyle = this.props.hovered ? 'red' : '#000000';
     ctx.beginPath();
-    ctx.arc(this.props.x, this.props.y, radius, 0, Math.PI * 2);
+    ctx.arc(this.props.x, this.props.y, this.props.radius, 0, Math.PI * 2);
     ctx.closePath();
     ctx.fill();
 
     ctx.fillStyle = '#ffffff';
     ctx.font = '48px serif';
-    ctx.fillText(this.props.type, this.props.x - radius / 3, this.props.y + radius / 4);
+    ctx.fillText(
+      this.props.type,
+      this.props.x - this.props.radius / 3,
+      this.props.y + this.props.radius / 4
+    );
   },
 });
 
