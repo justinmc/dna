@@ -58,8 +58,8 @@ const Surface = React.createClass({
   onMouseMove(e) {
     if (this.state.dragging) {
       this.setState({
-        x: this.state.x + e.clientX - this.state.dragX,
-        y: this.state.y + e.clientY - this.state.dragY,
+        x: this.state.x + (e.clientX - this.state.dragX) / this.state.scale,
+        y: this.state.y + (e.clientY - this.state.dragY) / this.state.scale,
         dragX: e.clientX,
         dragY: e.clientY,
       });
