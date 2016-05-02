@@ -58,10 +58,13 @@ const Surface = React.createClass({
   },
 
   onMouseMove(e) {
-    const canvasPosition = e.target.getBoundingClientRect();
+    const canvasPosition = this.refs.canvas.getBoundingClientRect();
+    const canvasStretchX = WIDTH / canvasPosition.width;
+    const canvasStretchY = HEIGHT / canvasPosition.height;
+
     const newState = {
-      mouseX: e.clientX - canvasPosition.left,
-      mouseY: e.clientY - canvasPosition.top,
+      mouseX: (e.clientX - canvasPosition.left) * canvasStretchX,
+      mouseY: (e.clientY - canvasPosition.top) * canvasStretchY,
     };
 
     if (this.state.dragging) {
@@ -119,8 +122,6 @@ const Surface = React.createClass({
   },
 
   render() {
-    //console.log('mousies', this.state.mouseX / this.state.scale, this.state.mouseY / this.state.scale);
-    //console.log('render at', this.state.x, this.state.y);
     return (
       <div className="surface">
         <canvas
