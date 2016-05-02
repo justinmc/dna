@@ -2,6 +2,10 @@ require('../../css/components/surface.scss');
 
 import React from 'react';
 import Scene from './scene.jsx';
+import renderUtils from '../utils/render_utils';
+
+const WIDTH = 1270;
+const HEIGHT = 560;
 
 const Surface = React.createClass({
   propTypes: {
@@ -23,7 +27,7 @@ const Surface = React.createClass({
     window.addEventListener('mousemove', this.onMouseMove);
   },
 
-  componentWillUpdate() {
+ componentWillUpdate(nextProps, nextState) {
     // Clear the canvas between renders
     const canvas = this.refs.canvas;
 
@@ -40,7 +44,7 @@ const Surface = React.createClass({
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.setTransform(this.state.scale, 0, 0, this.state.scale, 0, 0);
+    ctx.setTransform(nextState.scale, 0, 0, nextState.scale, 0, 0);
   },
 
   componentWillUnmount() {
@@ -84,13 +88,37 @@ const Surface = React.createClass({
     });
   },
 
+  clickCenter() {
+    const PADDING = 50;
+    const { bbox } = renderUtils.renderBasesList(this.props.basesList, 0, 0, 0, 0);
+    const newScaleX = WIDTH / bbox.width;
+    const newScaleY = HEIGHT / bbox.height;
+    let newScale;
+
+    if (Math.abs(1 - newScaleX) > Math.abs(1 - newScaleY)) {
+      newScale = newScaleX;
+    } else {
+      newScale = newScaleX;
+    }
+
+    const newWidth = WIDTH / newScale;
+    const newHeight = HEIGHT / newScale;
+
+    this.setState({
+      x: bbox.x - (newWidth - bbox.width) / 2,
+      y: bbox.y - (newHeight - bbox.height) / 2,
+      scale: newScale,
+    });
+  },
+
   render() {
     return (
       <div className="surface">
+        <button onClick={this.clickCenter}>Recenter</button>
         <canvas
           ref="canvas"
-          width="1270px"
-          height="560px"
+          width={`${WIDTH}px`}
+          height={`${HEIGHT}px`}
           onMouseDown={this.onMouseDown}
           onMouseUp={this.onMouseUp}
           onWheel={this.onWheel}

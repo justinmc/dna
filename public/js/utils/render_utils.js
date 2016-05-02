@@ -15,6 +15,12 @@ const renderUtils = {
   renderBasesList(basesList, startIndex, x, y, startAngle) {
     let bases = [];
     let connectors = [];
+    let bbox = {
+      x,
+      y,
+      width: 0,
+      height: 0,
+    };
     const recursions = [];
     let angle = startAngle;
 
@@ -81,6 +87,7 @@ const renderUtils = {
         />
       );
       basesList = basesList.set(base.index, base.set('rendered', true));
+      bbox = renderUtils.updateBboxWithPoint(bbox, x, y);
 
       if (previousPositions) {
         connectors.push(
@@ -106,9 +113,10 @@ const renderUtils = {
       );
       bases = bases.concat(recurseResults.bases);
       connectors = connectors.concat(recurseResults.connectors);
+      bbox = renderUtils.updateBboxWithBbox(bbox, recurseResults.bbox);
     });
 
-    return { bases, connectors };
+    return { bases, connectors, bbox };
   },
 
   /**
@@ -135,18 +143,39 @@ const renderUtils = {
     return renderableBases;
   },
 
-  /*
-  getBaseEl(x, y, type) {
-    return (
-      <CanvasBase
-        key={`base-${index}`}
-        x={x}
-        y={y}
-        type={type}
-      />
-    );
+  /**
+   * Return a new bbox adjusted to include the given point
+   * @param {Object} bbox
+   * @param {Number} x
+   * @param {Number} y
+   * @returns {Object}
+   */
+  updateBboxWithPoint(bbox, x, y) {
+    return {
+      x: bbox.x < x ? bbox.x : x,
+      y: bbox.y < y ? bbox.y : y,
+      width: bbox.x + bbox.width > x ? bbox.width : x - bbox.x,
+      height: bbox.y + bbox.height > y ? bbox.height : y - bbox.y,
+    };
   },
-  */
+
+  /**
+   * Return a new bbox including both given bboxes
+   * @param {Object} bboxA
+   * @param {Object} bboxB
+   * @returns {Object}
+   */
+  updateBboxWithBbox(bboxA, bboxB) {
+    const newBbox = {
+      x: bboxA.x < bboxB.x ? bboxA.x : bboxB.x,
+      y: bboxA.y < bboxB.y ? bboxA.y : bboxB.y,
+    };
+
+    newBbox.width = newBbox.x + Math.max(bboxA.x + bboxA.width, bboxB.x + bboxB.width);
+    newBbox.height = newBbox.y + Math.max(bboxA.y + bboxA.height, bboxB.y + bboxB.height);
+
+    return newBbox;
+  },
 };
 
 export default renderUtils;
