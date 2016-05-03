@@ -31,8 +31,8 @@ const Scene = React.createClass({
 
     return (
       <span>
-        {bases}
         {connectors}
+        {bases}
       </span>
     );
   },
