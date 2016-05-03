@@ -85,6 +85,7 @@ const renderUtils = {
             startY={openPositions.y}
             endX={x}
             endY={y}
+            connectorThickness={config.get('connectorThickness')}
           />
         );
         */
@@ -97,6 +98,7 @@ const renderUtils = {
           y={baseY}
           type={base.type}
           color={config.get('colors').get(base.type)}
+          fontSize={config.get('fontSize')}
           radius={config.get('baseRadius')}
           hovered={geometryUtils.isIinsideCircle(
             baseX,
@@ -118,6 +120,7 @@ const renderUtils = {
             startY={previousPositions.y}
             endX={baseX}
             endY={baseY}
+            connectorThickness={config.get('connectorThickness')}
           />
         );
       }

@@ -11,14 +11,23 @@ const initialState = Map({
     [baseTypes.N]: '#000000',
   }),
   baseRadius: 50,
-  fontSize: 10,
-  connectorWidth: 1,
+  fontSize: 48,
+  connectorThickness: 1,
 });
 
 function config(state = initialState, action) {
   switch (action.type) {
+    case actionConstants.CHANGE_BASE_RADIUS:
+      return state.set('baseRadius', action.baseRadius);
+
     case actionConstants.CHANGE_COLOR:
       return state.set('colors', state.get('colors').set(action.colorType, action.color));
+
+    case actionConstants.CHANGE_CONNECTOR_THICKNESS:
+      return state.set('connectorThickness', action.connectorThickness);
+
+    case actionConstants.CHANGE_FONT_SIZE:
+      return state.set('fontSize', action.fontSize);
 
     default:
       return state;

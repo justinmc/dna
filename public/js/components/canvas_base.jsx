@@ -17,6 +17,7 @@ const CanvasBase = React.createClass({
     color: React.PropTypes.string.isRequired,
     radius: React.PropTypes.number.isRequired,
     hovered: React.PropTypes.bool.isRequired,
+    fontSize: React.PropTypes.number.isRequired,
   },
 
   mixins: [CanvasMixin],
@@ -34,7 +35,7 @@ const CanvasBase = React.createClass({
     }
 
     ctx.fillStyle = colorUtils.getContrastingColor(this.props.color);
-    ctx.font = '48px serif';
+    ctx.font = `${this.props.fontSize}px serif`;
     ctx.fillText(
       this.props.type,
       this.props.x - this.props.radius / 3,

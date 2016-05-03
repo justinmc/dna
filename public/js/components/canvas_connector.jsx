@@ -7,6 +7,7 @@ const CanvasConnector = React.createClass({
     startY: React.PropTypes.number.isRequired,
     endX: React.PropTypes.number.isRequired,
     endY: React.PropTypes.number.isRequired,
+    connectorThickness: React.PropTypes.number.isRequired,
   },
 
   mixins: [CanvasMixin],
@@ -17,7 +18,7 @@ const CanvasConnector = React.createClass({
     ctx.moveTo(this.props.startX, this.props.startY);
     ctx.lineTo(this.props.endX, this.props.endY);
     ctx.closePath();
-    ctx.lineWidth = 1;
+    ctx.lineWidth = this.props.connectorThickness;
     ctx.stroke();
   },
 });
