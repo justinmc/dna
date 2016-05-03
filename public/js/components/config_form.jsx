@@ -22,22 +22,26 @@ const ConfigForm = React.createClass({
 
     return (
       <div className="config-form">
-        <div>
+        <div className="color-inputs">
           {colorInputs.toArray()}
+        </div>
+        <div className="number-inputs">
           <NumberInput
+            title="base radius"
             number={this.props.config.get('baseRadius')}
             onSubmit={this.props.configActionsBound.changeBaseRadius}
           />
           <NumberInput
+            title="font size"
             number={this.props.config.get('fontSize')}
             onSubmit={this.props.configActionsBound.changeFontSize}
           />
           <NumberInput
+            title="connector thickness"
             number={this.props.config.get('connectorThickness')}
             onSubmit={this.props.configActionsBound.changeConnectorThickness}
           />
         </div>
-        <button type="submit">Submit</button>
       </div>
     );
   },

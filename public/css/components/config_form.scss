@@ -1,2 +1,33 @@
 .config-form {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+
+  input {
+    width: 70px;
+    margin-left: 10px;
+  }
+
+  .color-input {
+    display: flex;
+    text-align: right;
+
+    &>* {
+      flex: 1;
+    }
+  }
+
+  .number-inputs {
+    padding-left: 50px;
+
+    .number-input {
+      display: flex;
+      width: 300px;
+      text-align: right;
+
+      &>* {
+        flex: 1;
+      }
+    }
+  }
 }

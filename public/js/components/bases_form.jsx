@@ -44,7 +44,7 @@ const BasesForm = React.createClass({
   render() {
     return (
       <form className="bases-form" onSubmit={this.onSubmit}>
-        <div>
+        <div className="input-container">
           <input
             className="input-sequence"
             value={this.state.sequence}

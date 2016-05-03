@@ -2,9 +2,15 @@
   display: flex;
   margin-right: 1rem;
 
-  input {
-    display: block;
-    width: 500px;
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    input {
+      display: block;
+      width: 500px;
+    }
   }
 
   .error {
@@ -13,5 +19,9 @@
     justify-content: center;
     margin-left: 1rem;
     color: red;
+  }
+
+  button {
+    display: none;
   }
 }

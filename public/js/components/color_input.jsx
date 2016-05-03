@@ -36,12 +36,15 @@ const ColorInput = React.createClass({
 
   render() {
     return (
-      <input
-        className="color-input"
-        value={this.state.color || this.props.color}
-        onChange={this.onChangeColor}
-        onKeyPress={this.onKeyPress}
-      />
+      <div className="color-input">
+        <span style={{ color: this.props.color }}>{this.props.type}</span>
+        <input
+          className="color-input"
+          value={this.state.color || this.props.color}
+          onChange={this.onChangeColor}
+          onKeyPress={this.onKeyPress}
+        />
+      </div>
     );
   },
 });

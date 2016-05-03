@@ -3,6 +3,7 @@ import React from 'react';
 const NumberInput = React.createClass({
   propTypes: {
     number: React.PropTypes.number,
+    title: React.PropTypes.string,
     onSubmit: React.PropTypes.func,
   },
 
@@ -37,13 +38,15 @@ const NumberInput = React.createClass({
 
   render() {
     return (
-      <input
-        type="number"
-        className="number-input"
-        value={this.state.number || this.props.number}
-        onChange={this.onChange}
-        onKeyPress={this.onKeyPress}
-      />
+      <div className="number-input">
+        <span>{this.props.title}</span>
+        <input
+          type="number"
+          value={this.state.number || this.props.number}
+          onChange={this.onChange}
+          onKeyPress={this.onKeyPress}
+        />
+      </div>
     );
   },
 });
