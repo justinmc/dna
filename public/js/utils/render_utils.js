@@ -225,6 +225,54 @@ const renderUtils = {
 
     return newBbox;
   },
+
+  /**
+   * Return the x, y, and scale in order to center this visualization
+   * @param {Immutable.List} basesList
+   * @param {Number} x
+   * @param {Number} y
+   * @param {Number} width
+   * @param {Number} height
+   * @param {Object} config from config reducer
+   * @returns {Object} x, y, scale
+   */
+  getCenter(params) {
+    const { bbox } = renderUtils.renderBasesList({
+      basesList: params.basesList,
+      index: 0,
+      x: params.x,
+      y: params.y,
+      mouseX: params.mouseX,
+      mouseY: params.mouseY,
+      width: params.width,
+      height: params.height,
+      config: params.config,
+    });
+
+    // Scale to fit bbox
+    const scaleToFit = {
+      x: params.width / bbox.width,
+      y: params.height / bbox.height,
+    };
+
+    const scale = Math.min(scaleToFit.x, scaleToFit.y);
+
+    // Move the starting point so that the bbox center aligns with canvas center
+    const centerOfCanvas = {
+      x: params.width / 2 / scale,
+      y: params.height / 2 / scale,
+    };
+    const centerOfBbox = {
+      x: bbox.x + bbox.width / 2,
+      y: bbox.y + bbox.height / 2,
+    };
+
+    return {
+      x: centerOfCanvas.x - centerOfBbox.x + params.x,
+      y: centerOfCanvas.y - centerOfBbox.y + params.y,
+      scale,
+    };
+  },
 };
 
 export default renderUtils;
