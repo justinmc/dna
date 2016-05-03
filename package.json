@@ -5,6 +5,7 @@
   "main": "public/js/main.js",
   "dependencies": {
     "immutable": "^3.8.1",
+    "keymirror": "^0.1.1",
     "query-string": "^4.1.0",
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
