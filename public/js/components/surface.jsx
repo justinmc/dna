@@ -78,14 +78,10 @@ const Surface = React.createClass({
   },
 
   onMouseMove(e) {
-    const canvasPosition = this.refs.canvas.getBoundingClientRect();
-    const canvasStretchX = WIDTH / canvasPosition.width;
-    const canvasStretchY = HEIGHT / canvasPosition.height;
-
-    // Set mouse coordinates relative to canvas, considering position offset and deformation
+    const { x: canvasX, y: canvasY } = this.getCanvasCoords(e.clientX, e.clientY);
     const newState = {
-      mouseX: (e.clientX - canvasPosition.left) * canvasStretchX,
-      mouseY: (e.clientY - canvasPosition.top) * canvasStretchY,
+      mouseX: canvasX,
+      mouseY: canvasY,
     };
 
     if (this.state.dragging) {
@@ -125,6 +121,38 @@ const Surface = React.createClass({
     });
   },
 
+  onClick(e) {
+    const { x: canvasX, y: canvasY } = this.getCanvasCoords(e.clientX, e.clientY);
+
+    const { hovereds } = renderUtils.renderBasesList({
+      basesList: this.props.basesList,
+      index: 0,
+      x: this.state.x,
+      y: this.state.y,
+      mouseX: canvasX / this.state.scale,
+      mouseY: canvasY / this.state.scale,
+      width: WIDTH,
+      height: HEIGHT,
+      config: this.props.config,
+    });
+
+    const baseIndex = hovereds.length ? hovereds[0] : null;
+
+    this.props.basesActionsBound.clickBase(baseIndex);
+  },
+
+  // Find mouse coordinates relative to canvas, considering position offset and deformation
+  getCanvasCoords(clientX, clientY) {
+    const canvasPosition = this.refs.canvas.getBoundingClientRect();
+    const canvasStretchX = WIDTH / canvasPosition.width;
+    const canvasStretchY = HEIGHT / canvasPosition.height;
+
+    return {
+      x: (clientX - canvasPosition.left) * canvasStretchX,
+      y: (clientY - canvasPosition.top) * canvasStretchY,
+    };
+  },
+
   clickCenter() {
     this.setState(renderUtils.getCenter({
       basesList: this.props.basesList,
@@ -146,6 +174,7 @@ const Surface = React.createClass({
           onMouseDown={this.onMouseDown}
           onMouseUp={this.onMouseUp}
           onWheel={this.onWheel}
+          onClick={this.onClick}
         >
           <Scene
             x={this.state.x}

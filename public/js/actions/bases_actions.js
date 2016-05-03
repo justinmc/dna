@@ -32,6 +32,13 @@ const appActions = {
       baseIndices,
     };
   },
+
+  clickBase(baseIndex) {
+    return {
+      type: actionConstants.CLICK_BASE,
+      baseIndex,
+    };
+  },
 };
 
 export default appActions;

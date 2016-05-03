@@ -7,6 +7,7 @@ const Base = Record({
   pair: null,
   rendered: false,
   hovered: false,
+  clicked: false,
 });
 
 export default Base;

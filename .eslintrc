@@ -5,6 +5,7 @@
     "react/require-render-return": "warn",
     "react/prefer-stateless-function": "warn",
     "new-cap": "warn",
-    "no-param-reassign": "warn"
+    "no-param-reassign": "warn",
+    "no-case-declarations": "warn"
   }
 }

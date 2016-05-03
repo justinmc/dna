@@ -5,6 +5,7 @@ import baseStructures from '../constants/base_structures';
 import geometryUtils from '../utils/geometry_utils';
 
 const SPACING = 150;
+const PAIR_THICKNESS_MULTIPLIER = 8;
 
 const renderUtils = {
   /**
@@ -99,7 +100,7 @@ const renderUtils = {
             startY={baseY}
             endX={previousPositions.x}
             endY={previousPositions.y}
-            connectorThickness={config.get('connectorThickness') * 8}
+            connectorThickness={config.get('connectorThickness') * PAIR_THICKNESS_MULTIPLIER}
           />
         );
 
@@ -153,6 +154,20 @@ const renderUtils = {
         width: config.get('baseRadius') * 2,
         height: config.get('baseRadius') * 2,
       });
+
+      // Render the user editable connector if clicked
+      if (base.clicked) {
+        connectors.push(
+          <CanvasConnector
+            key="user-editable-connector"
+            startX={baseX}
+            startY={baseY}
+            endX={mouseX}
+            endY={mouseY}
+            connectorThickness={config.get('connectorThickness') * PAIR_THICKNESS_MULTIPLIER}
+          />
+        );
+      }
 
       if (previousPositions.x && previousPositions.y) {
         connectors.push(
