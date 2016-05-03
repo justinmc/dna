@@ -1,4 +1,5 @@
 import { Map } from 'immutable';
+import actionConstants from '../constants/action_constants';
 import baseTypes from '../constants/base_types';
 
 const initialState = Map({
@@ -16,6 +17,9 @@ const initialState = Map({
 
 function config(state = initialState, action) {
   switch (action.type) {
+    case actionConstants.CHANGE_COLOR:
+      return state.set('colors', state.get('colors').set(action.colorType, action.color));
+
     default:
       return state;
   }

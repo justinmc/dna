@@ -55,9 +55,9 @@ const BasesForm = React.createClass({
             value={this.state.dbn}
             onChange={this.onChangeDbn}
           />
+          <div className="error">{this.props.dataError}</div>
         </div>
         <button type="submit">Submit</button>
-        <div className="error">{this.props.dataError}</div>
       </form>
     );
   },

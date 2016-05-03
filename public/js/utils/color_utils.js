@@ -40,6 +40,22 @@ const colorUtils = {
   getLuminance(r, g, b) {
     return 0.2126 * r + 0.7152 * g + 0.0722 * b;
   },
+
+  /**
+   * Returns true if given color is valid rgb color like '#ffffff'
+   * @param {String} hexStirng
+   * @returns {Bool}
+   */
+  isValidColor(hexString) {
+    if (!hexString || typeof hexString !== 'string' || hexString.length !== 7) {
+      return false;
+    }
+
+    const hexStringWithoutHash = hexString.substr(1, hexString.length - 1);
+    const hexNumber = parseInt(hexStringWithoutHash, 16);
+
+    return hexNumber >= 0 && hexNumber < Math.pow(16, 6);
+  },
 };
 
 export default colorUtils;

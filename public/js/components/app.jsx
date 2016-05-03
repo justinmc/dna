@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import ColorPicker from './color_picker.jsx';
 import BasesForm from './bases_form.jsx';
+import ConfigForm from './config_form.jsx';
 import Surface from './surface.jsx';
 import appActions from '../actions/app_actions';
 import basesActions from '../actions/bases_actions';
+import configActions from '../actions/config_actions';
 
 const App = React.createClass({
   propTypes: {
@@ -32,13 +34,19 @@ const App = React.createClass({
     return (
       <div className="app">
         <div className="ui">
-          <h1>DNA Vis</h1>
-          <BasesForm
-            basesActionsBound={bindActionCreators(basesActions, this.props.dispatch)}
-            sequence={this.props.bases.get('sequence')}
-            dbn={this.props.bases.get('dbn')}
-            dataError={this.props.bases.get('dataError')}
-          />
+          <h1>Justin's DNA Visualizer</h1>
+          <div className="form-container">
+            <BasesForm
+              basesActionsBound={bindActionCreators(basesActions, this.props.dispatch)}
+              sequence={this.props.bases.get('sequence')}
+              dbn={this.props.bases.get('dbn')}
+              dataError={this.props.bases.get('dataError')}
+            />
+            <ConfigForm
+              config={this.props.config}
+              configActionsBound={bindActionCreators(configActions, this.props.dispatch)}
+            />
+          </div>
         </div>
         <Surface
           basesList={this.props.bases.get('list')}
