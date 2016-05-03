@@ -73,23 +73,16 @@ const renderUtils = {
           angle: exitAngle,
         });
       } else if (close) {
-        /*
-         * TODO render pair connector
-        const openPositions = openStack.pop();
-        x = openPositions.x;
-        y = openPositions.y + 150;
-
         connectors.push(
           <CanvasConnector
-            key={`connector-close-${index}`}
-            startX={openPositions.x}
-            startY={openPositions.y}
-            endX={x}
-            endY={y}
-            connectorThickness={config.get('connectorThickness')}
+            key={`connector-close-${base.index}`}
+            startX={baseX}
+            startY={baseY}
+            endX={previousPositions.x}
+            endY={previousPositions.y}
+            connectorThickness={config.get('connectorThickness') * 8}
           />
         );
-        */
       }
 
       const hovered = geometryUtils.isIinsideCircle(
