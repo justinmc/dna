@@ -94,33 +94,40 @@ const Surface = React.createClass({
   },
 
   clickCenter() {
-    const PADDING = 50;
     const { bbox } = renderUtils.renderBasesList({
       basesList: this.props.basesList,
       index: 0,
-      x: 0,
-      y: 0,
-      mouseX: 0,
-      mouseY: 0,
+      x: this.state.x,
+      y: this.state.y,
+      mouseX: this.state.mouseX,
+      mouseY: this.state.mouseY,
+      width: WIDTH,
+      height: HEIGHT,
       config: this.props.config,
     });
-    const newScaleX = WIDTH / bbox.width;
-    const newScaleY = HEIGHT / bbox.height;
-    let newScale;
 
-    if (Math.abs(1 - newScaleX) > Math.abs(1 - newScaleY)) {
-      newScale = newScaleX;
-    } else {
-      newScale = newScaleX;
-    }
+    // Scale to fit bbox
+    const scaleToFit = {
+      x: WIDTH / bbox.width,
+      y: HEIGHT / bbox.height,
+    };
 
-    const newWidth = WIDTH / newScale;
-    const newHeight = HEIGHT / newScale;
+    const scale = Math.min(scaleToFit.x, scaleToFit.y);
+
+    // Move the starting point so that the bbox center aligns with canvas center
+    const centerOfCanvas = {
+      x: WIDTH / 2 / scale,
+      y: HEIGHT / 2 / scale,
+    };
+    const centerOfBbox = {
+      x: bbox.x + bbox.width / 2,
+      y: bbox.y + bbox.height / 2,
+    };
 
     this.setState({
-      x: bbox.x - (newWidth - bbox.width) / 2,
-      y: bbox.y - (newHeight - bbox.height) / 2,
-      scale: newScale,
+      x: centerOfCanvas.x - centerOfBbox.x + this.state.x,
+      y: centerOfCanvas.y - centerOfBbox.y + this.state.y,
+      scale,
     });
   },
 
@@ -141,6 +148,8 @@ const Surface = React.createClass({
             mouseX={this.state.mouseX / this.state.scale}
             mouseY={this.state.mouseY / this.state.scale}
             basesList={this.props.basesList}
+            width={WIDTH}
+            height={HEIGHT}
             config={this.props.config}
           />
         </canvas>

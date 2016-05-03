@@ -110,7 +110,12 @@ const renderUtils = {
         />
       );
       basesList = basesList.set(base.index, base.set('rendered', true));
-      bbox = renderUtils.updateBboxWithPoint(bbox, x, y);
+      bbox = renderUtils.updateBboxWithBbox(bbox, {
+        x: baseX - config.get('baseRadius'),
+        y: baseY - config.get('baseRadius'),
+        width: config.get('baseRadius') * 2,
+        height: config.get('baseRadius') * 2,
+      });
 
       if (previousPositions.x && previousPositions.y) {
         connectors.push(
@@ -191,35 +196,32 @@ const renderUtils = {
   },
 
   /**
-   * Return a new bbox adjusted to include the given point
-   * @param {Object} bbox
-   * @param {Number} x
-   * @param {Number} y
-   * @returns {Object}
-   */
-  updateBboxWithPoint(bbox, x, y) {
-    return {
-      x: bbox.x < x ? bbox.x : x,
-      y: bbox.y < y ? bbox.y : y,
-      width: bbox.x + bbox.width > x ? bbox.width : x - bbox.x,
-      height: bbox.y + bbox.height > y ? bbox.height : y - bbox.y,
-    };
-  },
-
-  /**
    * Return a new bbox including both given bboxes
    * @param {Object} bboxA
    * @param {Object} bboxB
    * @returns {Object}
    */
   updateBboxWithBbox(bboxA, bboxB) {
+    // Don't count empty bboxes
+    if (bboxA.width === 0 && bboxA.height === 0) {
+      return bboxB;
+    }
+    if (bboxB.width === 0 && bboxB.height === 0) {
+      return bboxA;
+    }
+
     const newBbox = {
       x: bboxA.x < bboxB.x ? bboxA.x : bboxB.x,
       y: bboxA.y < bboxB.y ? bboxA.y : bboxB.y,
     };
 
-    newBbox.width = newBbox.x + Math.max(bboxA.x + bboxA.width, bboxB.x + bboxB.width);
-    newBbox.height = newBbox.y + Math.max(bboxA.y + bboxA.height, bboxB.y + bboxB.height);
+    const maxXA = bboxA.x + bboxA.width;
+    const maxYA = bboxA.y + bboxA.height;
+    const maxXB = bboxB.x + bboxB.width;
+    const maxYB = bboxB.y + bboxB.height;
+
+    newBbox.width = maxXA > maxXB ? maxXA - newBbox.x : maxXB - newBbox.x;
+    newBbox.height = maxYA > maxYB ? maxYA - newBbox.y : maxYB - newBbox.y;
 
     return newBbox;
   },
