@@ -17,6 +17,7 @@ const CanvasConnector = React.createClass({
     ctx.moveTo(this.props.startX, this.props.startY);
     ctx.lineTo(this.props.endX, this.props.endY);
     ctx.closePath();
+    ctx.lineWidth = 1;
     ctx.stroke();
   },
 });

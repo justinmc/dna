@@ -96,6 +96,7 @@ const renderUtils = {
           x={baseX}
           y={baseY}
           type={base.type}
+          color={config.get('colors').get(base.type)}
           radius={config.get('baseRadius')}
           hovered={geometryUtils.isIinsideCircle(
             baseX,
