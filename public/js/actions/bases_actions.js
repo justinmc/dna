@@ -21,10 +21,15 @@ const appActions = {
 
     return {
       type: actionConstants.SUBMIT_BASES_FORM,
-      sequence,
-      dbn,
       basesList,
       error: errorMessage,
+    };
+  },
+
+  hoverBases(baseIndices) {
+    return {
+      type: actionConstants.HOVER_BASES,
+      baseIndices,
     };
   },
 };

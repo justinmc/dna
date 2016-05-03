@@ -16,7 +16,7 @@ const renderUtils = {
    * @param {Number} y
    * @param {Number} startAngle in radians
    * @param {Object} config from config reducer
-   * @returns {Object} with bases, connectors, and bbox keys
+   * @returns {Object} with bases, connectors, hovereds, and bbox keys
    */
   renderBasesList(params) {
     const { index: startIndex, x, y, mouseX, mouseY, config } = params;
@@ -24,6 +24,7 @@ const renderUtils = {
     let basesList = params.basesList;
     let bases = [];
     let connectors = [];
+    let hovereds = [];
     let bbox = {
       x,
       y,
@@ -91,6 +92,17 @@ const renderUtils = {
         */
       }
 
+      const hovered = geometryUtils.isIinsideCircle(
+        baseX,
+        baseY,
+        config.get('baseRadius'),
+        mouseX,
+        mouseY
+      );
+      if (hovered) {
+        hovereds.push(base.index);
+      }
+
       bases.push(
         <CanvasBase
           key={`base-${base.index}`}
@@ -100,13 +112,7 @@ const renderUtils = {
           color={config.get('colors').get(base.type)}
           fontSize={config.get('fontSize')}
           radius={config.get('baseRadius')}
-          hovered={geometryUtils.isIinsideCircle(
-            baseX,
-            baseY,
-            config.get('baseRadius'),
-            mouseX,
-            mouseY
-          )}
+          hovered={hovered}
         />
       );
       basesList = basesList.set(base.index, base.set('rendered', true));
@@ -145,10 +151,11 @@ const renderUtils = {
       });
       bases = bases.concat(recurseResults.bases);
       connectors = connectors.concat(recurseResults.connectors);
+      hovereds = hovereds.concat(recurseResults.hovereds);
       bbox = renderUtils.updateBboxWithBbox(bbox, recurseResults.bbox);
     });
 
-    return { bases, connectors, bbox };
+    return { bases, connectors, hovereds, bbox };
   },
 
   /**

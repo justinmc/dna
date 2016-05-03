@@ -9,6 +9,7 @@ const HEIGHT = 560;
 
 const Surface = React.createClass({
   propTypes: {
+    basesActionsBound: React.PropTypes.object,
     basesList: React.PropTypes.object,
     config: React.PropTypes.object,
   },
@@ -93,6 +94,19 @@ const Surface = React.createClass({
     }
 
     this.setState(newState);
+
+    const { hovereds } = renderUtils.renderBasesList({
+      basesList: this.props.basesList,
+      index: 0,
+      x: this.state.x,
+      y: this.state.y,
+      mouseX: newState.mouseX / this.state.scale,
+      mouseY: newState.mouseY / this.state.scale,
+      width: WIDTH,
+      height: HEIGHT,
+      config: this.props.config,
+    });
+    this.props.basesActionsBound.hoverBases(hovereds);
   },
 
   onMouseUp() {

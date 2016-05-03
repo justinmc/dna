@@ -2,36 +2,38 @@ import { List, Map } from 'immutable';
 import actionConstants from '../constants/action_constants';
 import dbnUtils from '../utils/dbn_utils';
 
+const defaultSequence = 'GAGTACAATATGTACCG';
+const defaultDbn = '..((((.....))))..';
 const initialState = Map({
   dataError: '',
-  sequence: 'GAGTACAATATGTACCG',
-  dbn: '..((((.....))))..',
   list: List(),
 });
 
 function bases(state = initialState, action) {
   switch (action.type) {
+    case actionConstants.HOVER_BASES:
+      return state.set('list', state.get('list').map((base) => {
+        const hovered = action.baseIndices.indexOf(base.index) !== -1;
+        return base.set('hovered', hovered);
+      }));
+
     case actionConstants.POP_STATE:
       if (typeof action.sequence !== 'string' || typeof action.dbn !== 'string') {
-        action.sequence = initialState.get('sequence');
-        action.dbn = initialState.get('dbn');
+        action.sequence = defaultSequence;
+        action.dbn = defaultDbn;
       }
 
       return state.merge({
-        sequence: action.sequence,
-        dbn: action.dbn,
         list: dbnUtils.createStructure(action.sequence, action.dbn),
       });
 
     case actionConstants.START_APP:
       if (typeof action.sequence !== 'string' || typeof action.dbn !== 'string') {
-        action.sequence = initialState.get('sequence');
-        action.dbn = initialState.get('dbn');
+        action.sequence = defaultSequence;
+        action.dbn = defaultDbn;
       }
 
       return state.merge({
-        sequence: action.sequence,
-        dbn: action.dbn,
         list: dbnUtils.createStructure(action.sequence, action.dbn),
       });
 
@@ -42,8 +44,6 @@ function bases(state = initialState, action) {
 
       return state.merge({
         list: action.basesList,
-        sequence: action.sequence,
-        dbn: action.dbn,
         dataError: null,
       });
 

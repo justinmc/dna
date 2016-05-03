@@ -31,15 +31,25 @@ const App = React.createClass({
   },
 
   render() {
+    const basesActionsBound = bindActionCreators(basesActions, this.props.dispatch);
+
+    const sequence = this.props.bases.get('list').map((base) => base.type).join('');
+    const dbn = this.props.bases.get('list').map((base) => base.structure).join('');
+    const hovereds = this.props.bases.get('list')
+      .filter((base) => base.hovered)
+      .map((base) => base.index);
+
     return (
       <div className="app">
         <div className="ui">
           <h1>Justin's DNA Visualizer</h1>
           <div className="form-container">
             <BasesForm
-              basesActionsBound={bindActionCreators(basesActions, this.props.dispatch)}
-              sequence={this.props.bases.get('sequence')}
-              dbn={this.props.bases.get('dbn')}
+              basesActionsBound={basesActionsBound}
+              basesList={this.props.bases.get('list')}
+              sequence={sequence}
+              dbn={dbn}
+              hovereds={hovereds}
               dataError={this.props.bases.get('dataError')}
             />
             <ConfigForm
@@ -49,6 +59,7 @@ const App = React.createClass({
           </div>
         </div>
         <Surface
+          basesActionsBound={basesActionsBound}
           basesList={this.props.bases.get('list')}
           config={this.props.config}
         />

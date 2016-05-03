@@ -7,9 +7,14 @@
     flex-direction: column;
     justify-content: center;
 
-    input {
+    .highlighted-input__input {
       display: block;
       width: 500px;
+    }
+
+    div.highlighted-input__input {
+      border: 1px transparent solid;
+      margin-left: 2px;
     }
   }
 
@@ -23,5 +28,9 @@
 
   button {
     display: none;
+  }
+
+  .highlighted {
+    background-color: yellow;
   }
 }
