@@ -4,14 +4,19 @@ import dbnUtils from '../utils/dbn_utils';
 
 const initialState = Map({
   dataError: '',
-  sequence: null,
-  dbn: null,
+  sequence: 'GAGTACAATATGTACCG',
+  dbn: '..((((.....))))..',
   list: List(),
 });
 
 function bases(state = initialState, action) {
   switch (action.type) {
     case actionConstants.POP_STATE:
+      if (typeof action.sequence !== 'string' || typeof action.dbn !== 'string') {
+        action.sequence = initialState.get('sequence');
+        action.dbn = initialState.get('dbn');
+      }
+
       return state.merge({
         sequence: action.sequence,
         dbn: action.dbn,
@@ -20,7 +25,8 @@ function bases(state = initialState, action) {
 
     case actionConstants.START_APP:
       if (typeof action.sequence !== 'string' || typeof action.dbn !== 'string') {
-        return state;
+        action.sequence = initialState.get('sequence');
+        action.dbn = initialState.get('dbn');
       }
 
       return state.merge({

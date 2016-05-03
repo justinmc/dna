@@ -62,6 +62,7 @@ const Surface = React.createClass({
     const canvasStretchX = WIDTH / canvasPosition.width;
     const canvasStretchY = HEIGHT / canvasPosition.height;
 
+    // Set mouse coordinates relative to canvas, considering position offset and deformation
     const newState = {
       mouseX: (e.clientX - canvasPosition.left) * canvasStretchX,
       mouseY: (e.clientY - canvasPosition.top) * canvasStretchY,
