@@ -91,6 +91,7 @@ const renderUtils = {
           />
         );
       } else if (close) {
+        // Add the pair connector for the pair this is closing
         connectors.push(
           <CanvasConnector
             key={`connector-pair-${base.index}`}
@@ -99,6 +100,25 @@ const renderUtils = {
             endX={previousPositions.x}
             endY={previousPositions.y}
             connectorThickness={config.get('connectorThickness') * 8}
+          />
+        );
+
+        // Add the connector on the previous non-pair side, if any
+        // if (base.pair.index !== base.index - 1) {
+        const { x: pairPrevX, y: pairPrevY } = geometryUtils.getPositionAtAngleAndDistance(
+          baseX,
+          baseY,
+          angle - Math.PI / 2,
+          SPACING
+        );
+        connectors.push(
+          <CanvasConnector
+            key={`connector-pair-prev-${base.index}`}
+            startX={baseX}
+            startY={baseY}
+            endX={pairPrevX}
+            endY={pairPrevY}
+            connectorThickness={config.get('connectorThickness')}
           />
         );
       }
