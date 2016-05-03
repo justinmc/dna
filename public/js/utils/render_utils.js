@@ -65,17 +65,35 @@ const renderUtils = {
         // We should exit perpendicular to it
         const exitAngle = nextAngle - Math.PI / 2;
 
-        // Reecurse on this base later
+        // Recurse on this base later
         exitPaths.push({
           index: base.index + 1,
           x: baseX,
           y: baseY,
           angle: exitAngle,
         });
+
+        // Add a connector to the base we'll recurse on
+        const { x: exitX, y: exitY } = geometryUtils.getPositionAtAngleAndDistance(
+          baseX,
+          baseY,
+          exitAngle,
+          SPACING
+        );
+        connectors.push(
+          <CanvasConnector
+            key={`connector-recurse-${base.index}`}
+            startX={baseX}
+            startY={baseY}
+            endX={exitX}
+            endY={exitY}
+            connectorThickness={config.get('connectorThickness')}
+          />
+        );
       } else if (close) {
         connectors.push(
           <CanvasConnector
-            key={`connector-close-${base.index}`}
+            key={`connector-pair-${base.index}`}
             startX={baseX}
             startY={baseY}
             endX={previousPositions.x}
