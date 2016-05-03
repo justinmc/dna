@@ -8,6 +8,7 @@ const Scene = React.createClass({
     y: React.PropTypes.number,
     mouseX: React.PropTypes.number,
     mouseY: React.PropTypes.number,
+    config: React.PropTypes.object,
   },
 
   getDefaultProps() {
@@ -25,6 +26,7 @@ const Scene = React.createClass({
       y: this.props.y,
       mouseX: this.props.mouseX,
       mouseY: this.props.mouseY,
+      config: this.props.config,
     });
 
     return (

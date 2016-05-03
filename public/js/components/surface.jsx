@@ -10,6 +10,7 @@ const HEIGHT = 560;
 const Surface = React.createClass({
   propTypes: {
     basesList: React.PropTypes.object,
+    config: React.PropTypes.object,
   },
 
   getInitialState() {
@@ -101,6 +102,7 @@ const Surface = React.createClass({
       y: 0,
       mouseX: 0,
       mouseY: 0,
+      config: this.props.config,
     });
     const newScaleX = WIDTH / bbox.width;
     const newScaleY = HEIGHT / bbox.height;
@@ -139,6 +141,7 @@ const Surface = React.createClass({
             mouseX={this.state.mouseX / this.state.scale}
             mouseY={this.state.mouseY / this.state.scale}
             basesList={this.props.basesList}
+            config={this.props.config}
           />
         </canvas>
         <button onClick={this.clickCenter}>Recenter</button>

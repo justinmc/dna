@@ -5,7 +5,6 @@ import baseStructures from '../constants/base_structures';
 import geometryUtils from '../utils/geometry_utils';
 
 const SPACING = 150;
-const BASE_RADIUS = 50;
 
 const renderUtils = {
   /**
@@ -16,10 +15,11 @@ const renderUtils = {
    * @param {Number} x
    * @param {Number} y
    * @param {Number} startAngle in radians
+   * @param {Object} config from config reducer
    * @returns {Object} with bases, connectors, and bbox keys
    */
   renderBasesList(params) {
-    const { index: startIndex, x, y, mouseX, mouseY } = params;
+    const { index: startIndex, x, y, mouseX, mouseY, config } = params;
     const startAngle = params.angle || 0;
     let basesList = params.basesList;
     let bases = [];
@@ -96,8 +96,14 @@ const renderUtils = {
           x={baseX}
           y={baseY}
           type={base.type}
-          radius={BASE_RADIUS}
-          hovered={geometryUtils.isIinsideCircle(baseX, baseY, BASE_RADIUS, mouseX, mouseY)}
+          radius={config.get('baseRadius')}
+          hovered={geometryUtils.isIinsideCircle(
+            baseX,
+            baseY,
+            config.get('baseRadius'),
+            mouseX,
+            mouseY
+          )}
         />
       );
       basesList = basesList.set(base.index, base.set('rendered', true));
@@ -126,6 +132,7 @@ const renderUtils = {
         angle: recurseData.angle,
         mouseX,
         mouseY,
+        config,
       });
       bases = bases.concat(recurseResults.bases);
       connectors = connectors.concat(recurseResults.connectors);

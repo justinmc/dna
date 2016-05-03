@@ -11,6 +11,7 @@ const App = React.createClass({
   propTypes: {
     bases: React.PropTypes.object,
     dispatch: React.PropTypes.func,
+    config: React.PropTypes.object,
   },
 
   componentDidMount() {
@@ -39,7 +40,10 @@ const App = React.createClass({
             dataError={this.props.bases.get('dataError')}
           />
         </div>
-        <Surface basesList={this.props.bases.get('list')} />
+        <Surface
+          basesList={this.props.bases.get('list')}
+          config={this.props.config}
+        />
       </div>
     );
   },
@@ -48,6 +52,7 @@ const App = React.createClass({
 function select(state) {
   return {
     bases: state.bases,
+    config: state.config,
   };
 }
 
