@@ -36,10 +36,12 @@ const CanvasBase = React.createClass({
 
     ctx.fillStyle = colorUtils.getContrastingColor(this.props.color);
     ctx.font = `${this.props.fontSize}px serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
     ctx.fillText(
       this.props.type,
-      this.props.x - this.props.radius / 3,
-      this.props.y + this.props.radius / 4
+      this.props.x,
+      this.props.y
     );
   },
 });
